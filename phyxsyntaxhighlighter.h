@@ -22,6 +22,7 @@
 
 #include <QSyntaxHighlighter>
 #include <QTextCharFormat>
+#include <QRegularExpression>
 #include "global.h"
 
 class PhyxSyntaxHighlighter : public QSyntaxHighlighter
@@ -63,7 +64,7 @@ protected:
 private:
     struct HighlightingRule
     {
-        QRegExp pattern;
+        QRegularExpression pattern;
         QTextCharFormat format;
     };
     QVector<HighlightingRule> highlightingRulesPriority1;
@@ -74,8 +75,8 @@ private:
     QVector<HighlightingRule> functionHighlightingRules;
     QList<Error>              errorList;
 
-    QRegExp commentStartExpression;
-    QRegExp commentEndExpression;
+    QRegularExpression commentStartExpression;
+    QRegularExpression commentEndExpression;
 
     QTextCharFormat textFormat;
     QTextCharFormat commentFormat;

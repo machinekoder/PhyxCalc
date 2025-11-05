@@ -47,10 +47,10 @@ void PhyxVariable::copyVariable(PhyxVariable *source, PhyxVariable *destination)
 void PhyxVariable::setUnit(PhyxUnit *unit)
 {
     m_unit->fromSimpleUnit(unit);
-    connect(m_unit, SIGNAL(offsetValue(PhyxFloatDataType)),
-            this, SLOT(offsetValue(PhyxFloatDataType)));
-    connect(m_unit, SIGNAL(scaleValue(PhyxFloatDataType)),
-            this, SLOT(scaleValue(PhyxFloatDataType)));
+    connect(m_unit, &PhyxUnit::offsetValue,
+            this, &PhyxVariable::offsetValue);
+    connect(m_unit, &PhyxUnit::scaleValue,
+            this, &PhyxVariable::scaleValue);
 }
 
 bool PhyxVariable::isComplex()

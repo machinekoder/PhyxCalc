@@ -346,33 +346,33 @@ void PhyxCalculator::initialize()
 
     //initialize unit system
     unitSystem = new PhyxUnitSystem(this);
-    connect(unitSystem, SIGNAL(unitAdded(QString)),
-            this, SLOT(addUnitRule(QString)));
-    connect(unitSystem, SIGNAL(unitRemoved(QString)),
-            this, SLOT(removeUnitRule(QString)));
-    connect(unitSystem, SIGNAL(prefixAdded(QString)),
-            this, SLOT(addPrefixRule(QString)));
-    connect(unitSystem, SIGNAL(prefixRemoved(QString)),
-            this, SLOT(removePrefixRule(QString)));
-    connect(unitSystem, SIGNAL(unitGroupAdded(QString)),
-            this, SLOT(addUnitGroupRule(QString)));
-    connect(unitSystem, SIGNAL(unitGroupRemoved(QString)),
-            this, SLOT(removeUnitGroupRule(QString)));
+    connect(unitSystem, &PhyxUnitSystem::unitAdded,
+            this, &PhyxCalculator::addUnitRule);
+    connect(unitSystem, &PhyxUnitSystem::unitRemoved,
+            this, &PhyxCalculator::removeUnitRule);
+    connect(unitSystem, &PhyxUnitSystem::prefixAdded,
+            this, &PhyxCalculator::addPrefixRule);
+    connect(unitSystem, &PhyxUnitSystem::prefixRemoved,
+            this, &PhyxCalculator::removePrefixRule);
+    connect(unitSystem, &PhyxUnitSystem::unitGroupAdded,
+            this, &PhyxCalculator::addUnitGroupRule);
+    connect(unitSystem, &PhyxUnitSystem::unitGroupRemoved,
+            this, &PhyxCalculator::removeUnitGroupRule);
 
     //initialize variable manager
     variableManager = new PhyxVariableManager(this);
-    connect(variableManager, SIGNAL(variableAdded(QString)),
-            this, SLOT(addVariableRule(QString)));
-    connect(variableManager, SIGNAL(variableRemoved(QString)),
-            this, SLOT(removeVariableRule(QString)));
-    connect(variableManager, SIGNAL(constantAdded(QString)),
-            this, SLOT(addConstantRule(QString)));
-    connect(variableManager, SIGNAL(constantRemoved(QString)),
-            this, SLOT(removeConstantRule(QString)));
-    connect(variableManager, SIGNAL(functionAdded(QString,int)),
-            this, SLOT(addFunctionRule(QString,int)));
-    connect(variableManager, SIGNAL(functionRemoved(QString,int)),
-            this, SLOT(removeFunctionRule(QString,int)));
+    connect(variableManager, &PhyxVariableManager::variableAdded,
+            this, &PhyxCalculator::addVariableRule);
+    connect(variableManager, &PhyxVariableManager::variableRemoved,
+            this, &PhyxCalculator::removeVariableRule);
+    connect(variableManager, &PhyxVariableManager::constantAdded,
+            this, &PhyxCalculator::addConstantRule);
+    connect(variableManager, &PhyxVariableManager::constantRemoved,
+            this, &PhyxCalculator::removeConstantRule);
+    connect(variableManager, &PhyxVariableManager::functionAdded,
+            this, &PhyxCalculator::addFunctionRule);
+    connect(variableManager, &PhyxVariableManager::functionRemoved,
+            this, &PhyxCalculator::removeFunctionRule);
 
     //initialize special variable #
     PhyxVariable *variable = new PhyxVariable(this);
@@ -1012,9 +1012,9 @@ PhyxValueDataType PhyxCalculator::stringToComplex(QString string)
 {
     PhyxValueDataType value;
 
-    if (string.indexOf(QRegExp("[ij]")) != -1)
+    if (string.indexOf(QRegularExpression("[ij]")) != -1)
     {
-        string.remove(QRegExp("[ij]"));
+        string.remove(QRegularExpression("[ij]"));
         if (string.isEmpty())
             string="1";
 

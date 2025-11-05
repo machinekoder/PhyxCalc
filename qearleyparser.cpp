@@ -291,7 +291,7 @@ bool QEarleyParser::parse(int startPosition)
                         if ((word.conclusion.at(currentIndex) == firstSymbol)
                                 || (firstSymbol == 127)
                                 || ((firstSymbol == 26) && (word.conclusion.at(currentIndex) != '='))
-                                || ((firstSymbol == 27) && !QString(word.conclusion.at(currentIndex)).contains(QRegExp(EXCLUDED_CHARS))))  //127 is the any+ char, 27 the any char
+                                || ((firstSymbol == 27) && !QString(word.conclusion.at(currentIndex)).contains(QRegularExpression(EXCLUDED_CHARS))))  //127 is the any+ char, 27 the any char
                         {
                             appendEarleyItem(currentIndex+1, item->rule, item->dotPos+1, item->startPos, item);   //move point right
                         }

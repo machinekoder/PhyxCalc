@@ -39,15 +39,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->tabWidget->removeTab(0);
     ui->tabWidget->removeTab(0);
 
-    connect(ui->tabWidget, SIGNAL(currentChanged(int)),
-            this, SLOT(tabChanged(int)));
-    connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)),
-            this, SLOT(closeTab(int)));
+    connect(ui->tabWidget, &QTabWidget::currentChanged,
+            this, &MainWindow::tabChanged);
+    connect(ui->tabWidget, &QTabWidget::tabCloseRequested,
+            this, &MainWindow::closeTab);
 
-    connect(ui->actionExit, SIGNAL(triggered()),
-            this, SLOT(close()));
-    connect(ui->actionClose_All, SIGNAL(triggered()),
-            this, SLOT(closeAllTabs()));
+    connect(ui->actionExit, &QAction::triggered,
+            this, &MainWindow::close);
+    connect(ui->actionClose_All, &QAction::triggered,
+            this, &MainWindow::closeAllTabs);
 
     initializeGUI();
     loadAllDocks();
@@ -437,10 +437,10 @@ void MainWindow::initializeGUI()
     newItem->setFont(font);
     ui->variableTable->setHorizontalHeaderItem(2, newItem);
 
-    connect(ui->actionVariables, SIGNAL(toggled(bool)),
-            ui->variablesDock, SLOT(setVisible(bool)));
-    connect(ui->variablesDock, SIGNAL(visibilityChanged(bool)),
-            ui->actionVariables, SLOT(setChecked(bool)));
+    connect(ui->actionVariables, &QAction::toggled,
+            ui->variablesDock, &QDockWidget::setVisible);
+    connect(ui->variablesDock, &QDockWidget::visibilityChanged,
+            ui->actionVariables, &QAction::setChecked);
 
     //initialize constant Dock
 
@@ -458,10 +458,10 @@ void MainWindow::initializeGUI()
     newItem->setFont(font);
     ui->constantsTable->setHorizontalHeaderItem(2, newItem);
 
-    connect(ui->actionConstants, SIGNAL(toggled(bool)),
-            ui->constantsDock, SLOT(setVisible(bool)));
-    connect(ui->constantsDock, SIGNAL(visibilityChanged(bool)),
-            ui->actionConstants, SLOT(setChecked(bool)));
+    connect(ui->actionConstants, &QAction::toggled,
+            ui->constantsDock, &QDockWidget::setVisible);
+    connect(ui->constantsDock, &QDockWidget::visibilityChanged,
+            ui->actionConstants, &QAction::setChecked);
 
     //initialize units Dock
     ui->unitsTable->setColumnCount(5);
@@ -484,10 +484,10 @@ void MainWindow::initializeGUI()
     newItem->setFont(font);
     ui->unitsTable->setHorizontalHeaderItem(4, newItem);
 
-    connect(ui->actionUnits, SIGNAL(toggled(bool)),
-            ui->unitsDock, SLOT(setVisible(bool)));
-    connect(ui->unitsDock, SIGNAL(visibilityChanged(bool)),
-            ui->actionUnits, SLOT(setChecked(bool)));
+    connect(ui->actionUnits, &QAction::toggled,
+            ui->unitsDock, &QDockWidget::setVisible);
+    connect(ui->unitsDock, &QDockWidget::visibilityChanged,
+            ui->actionUnits, &QAction::setChecked);
 
     //initialize prefixes Dock
     ui->prefixesTable->setColumnCount(3);
@@ -504,22 +504,22 @@ void MainWindow::initializeGUI()
     newItem->setFont(font);
     ui->prefixesTable->setHorizontalHeaderItem(2, newItem);
 
-    connect(ui->actionPrefixes, SIGNAL(toggled(bool)),
-            ui->prefixesDock, SLOT(setVisible(bool)));
-    connect(ui->prefixesDock, SIGNAL(visibilityChanged(bool)),
-            ui->actionPrefixes, SLOT(setChecked(bool)));
+    connect(ui->actionPrefixes, &QAction::toggled,
+            ui->prefixesDock, &QDockWidget::setVisible);
+    connect(ui->prefixesDock, &QDockWidget::visibilityChanged,
+            ui->actionPrefixes, &QAction::setChecked);
 
     //initialize functions Dock
 
     ui->functionsList->setViewMode(QListView::IconMode);
     ui->functionsList->setResizeMode(QListView::Adjust);
 
-    connect(ui->functionsList, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(dockWidgetPressed(QListWidgetItem*)));
-    connect(ui->actionFunctions, SIGNAL(toggled(bool)),
-            ui->functionsDock, SLOT(setVisible(bool)));
-    connect(ui->functionsDock, SIGNAL(visibilityChanged(bool)),
-            ui->actionFunctions, SLOT(setChecked(bool)));
+    connect(ui->functionsList, &QListWidget::itemClicked,
+            this, &MainWindow::dockWidgetPressed);
+    connect(ui->actionFunctions, &QAction::toggled,
+            ui->functionsDock, &QDockWidget::setVisible);
+    connect(ui->functionsDock, &QDockWidget::visibilityChanged,
+            ui->actionFunctions, &QAction::setChecked);
 
     //initialize special buttons
     QMenu *configureMenu = new QMenu(this);
@@ -595,12 +595,12 @@ void MainWindow::initializeGUI()
 
     //intialize plot window
     plotWindow = new PlotWindow(this);
-    connect(plotWindow, SIGNAL(visibilityChanged(bool)),
-            ui->action_Plot_Window, SLOT(setChecked(bool)));
+    connect(plotWindow, &QWidget::visibilityChanged,
+            ui->action_Plot_Window, &QAction::setChecked);
 
     //initialize plot action
-    connect(ui->actionPlot, SIGNAL(triggered()),
-            this, SLOT(showPlotDialog()));
+    connect(ui->actionPlot, &QAction::triggered,
+            this, &MainWindow::showPlotDialog);
 }
 
 void MainWindow::switchLayout(int number)
@@ -646,10 +646,10 @@ void MainWindow::addNewTab()
     documentList.append(newDocument);
 
     newDocument->expressionEdit->installEventFilter(this);
-    connect(newDocument->expressionEdit->document(), SIGNAL(modificationChanged(bool)),
-            this, SLOT(documentModified()));
-    connect(newDocument->lineParser, SIGNAL(listWidgetUpdate(QListWidget*,QStringList)),
-            this, SLOT(loadListWidget(QListWidget*,QStringList)));
+    connect(newDocument->expressionEdit->document(), &QTextDocument::modificationChanged,
+            this, &MainWindow::documentModified);
+    connect(newDocument->lineParser, &LineParser::listWidgetUpdate,
+            this, &MainWindow::loadListWidget);
 
     layout->addWidget(newDocument->expressionEdit);
     layout->setMargin(0);
@@ -662,8 +662,8 @@ void MainWindow::addNewTab()
 
     //initialize custom context menu
     newDocument->expressionEdit->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(newDocument->expressionEdit, SIGNAL(customContextMenuRequested(QPoint)),
-            this, SLOT(showContexMenu(QPoint)));
+    connect(newDocument->expressionEdit, &QWidget::customContextMenuRequested,
+            this, &MainWindow::showContexMenu);
 }
 
 bool MainWindow::closeTab(int index)
@@ -930,13 +930,13 @@ void MainWindow::loadDock(const QString &name, const QStringList &items)
     ui->menuDocks->addAction(menuAction);
 
     //connect all sorts of signals and slots
-    connect(listWidget, SIGNAL(itemClicked(QListWidgetItem*)),
-            this, SLOT(dockWidgetPressed(QListWidgetItem*)));
-    connect(menuAction, SIGNAL(toggled(bool)),
-            dockWidget, SLOT(setVisible(bool)));
+    connect(listWidget, &QListWidget::itemClicked,
+            this, &MainWindow::dockWidgetPressed);
+    connect(menuAction, &QAction::toggled,
+            dockWidget, &QDockWidget::setVisible);
 
-    connect(dockWidget, SIGNAL(visibilityChanged(bool)),
-            menuAction, SLOT(setChecked(bool)));
+    connect(dockWidget, &QDockWidget::visibilityChanged,
+            menuAction, &QAction::setChecked);
 }
 
 void MainWindow::loadListWidget(QListWidget *listWidget, const QStringList &items)
@@ -1034,8 +1034,8 @@ void MainWindow::updateRecentDocuments()
         recentDocumentAction->setText(tr("%1 [%2]").arg(fileName).arg(recentDocuments.at(i)));
         ui->menuOpen_Recent->addAction(recentDocumentAction);
 
-        connect(recentDocumentAction, SIGNAL(triggered()),
-                this, SLOT(openRecentDocument()));
+        connect(recentDocumentAction, &QAction::triggered,
+                this, &MainWindow::openRecentDocument);
     }
 }
 
@@ -1087,6 +1087,9 @@ void MainWindow::setOrientation(MainWindow::ScreenOrientation orientation)
     }
 #endif // Q_OS_SYMBIAN
 
+    // Qt6 removed the orientation attributes, so we only handle them for Qt5 and earlier
+    // For Qt6, we just return as orientation locking is not supported
+#if QT_VERSION < 0x060000
     Qt::WidgetAttribute attribute;
     switch (orientation) {
 #if QT_VERSION < 0x040702
@@ -1118,6 +1121,7 @@ void MainWindow::setOrientation(MainWindow::ScreenOrientation orientation)
 #endif // QT_VERSION < 0x040702
     };
     setAttribute(attribute, true);
+#endif // QT_VERSION < 0x060000
 }
 
 
