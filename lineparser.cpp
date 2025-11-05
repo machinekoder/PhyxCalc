@@ -614,10 +614,11 @@ QString LineParser::exportFormelEditor()
         int pos = 0;
         QRegularExpressionMatch match = regExp.match(text, pos);
         while (match.hasMatch()) {
-         QString replacement = QString("\\sqrt[%1]").arg(match.captured(1));
-         text.replace(match.capturedStart(), match.capturedLength(), replacement);
-         pos = match.capturedStart() + replacement.size();
-         match = regExp.match(text, pos);
+            QString replacement = QString("\\sqrt[%1]").arg(match.captured(1));
+            text.replace(match.capturedStart(), match.capturedLength(), replacement);
+            // Advance position to just after the replaced substring to avoid skipping overlapping matches
+            pos = match.capturedStart() + replacement.length();
+            match = regExp.match(text, pos);
         }
     }
 

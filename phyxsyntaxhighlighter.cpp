@@ -105,13 +105,12 @@ void PhyxSyntaxHighlighter::removeError(int line, int pos)
 void PhyxSyntaxHighlighter::highlightRules(const QString &text, const QVector<HighlightingRule> &highlightingRules)
 {
     foreach (const HighlightingRule &rule, highlightingRules) {
-        QRegularExpression expression(rule.pattern);
-        QRegularExpressionMatch match = expression.match(text);
+        QRegularExpressionMatch match = rule.pattern.match(text);
         int index = match.capturedStart();
         while (index >= 0) {
             int length = match.capturedLength();
             setFormat(index, length, rule.format);
-            match = expression.match(text, index + length);
+            match = rule.pattern.match(text, index + length);
             index = match.capturedStart();
         }
     }
