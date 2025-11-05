@@ -1087,6 +1087,9 @@ void MainWindow::setOrientation(MainWindow::ScreenOrientation orientation)
     }
 #endif // Q_OS_SYMBIAN
 
+    // Qt6 removed the orientation attributes, so we only handle them for Qt5 and earlier
+    // For Qt6, we just return as orientation locking is not supported
+#if QT_VERSION < 0x060000
     Qt::WidgetAttribute attribute;
     switch (orientation) {
 #if QT_VERSION < 0x040702
@@ -1118,6 +1121,7 @@ void MainWindow::setOrientation(MainWindow::ScreenOrientation orientation)
 #endif // QT_VERSION < 0x040702
     };
     setAttribute(attribute, true);
+#endif // QT_VERSION < 0x060000
 }
 
 
