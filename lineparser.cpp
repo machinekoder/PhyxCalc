@@ -23,28 +23,28 @@ LineParser::LineParser(QObject *)
 {
     m_loading = true;
     m_phyxCalculator = new PhyxCalculator(this);
-    connect(m_phyxCalculator, SIGNAL(outputResult()),
-            this, SLOT(outputResult()));
-    connect(m_phyxCalculator, SIGNAL(outputError()),
-            this, SLOT(outputError()));
-    connect(m_phyxCalculator, SIGNAL(outputConverted(QString)),
-            this, SLOT(outputConverted(QString)));
-    connect(m_phyxCalculator, SIGNAL(outputText(QString)),
-            this, SLOT(outputText(QString)));
-    connect(m_phyxCalculator, SIGNAL(variablesChanged()),
-            this, SLOT(showVariables()));
-    connect(m_phyxCalculator, SIGNAL(constantsChanged()),
-            this, SLOT(showConstants()));
-    connect(m_phyxCalculator, SIGNAL(unitsChanged()),
-            this, SLOT(updateUnits()));
-    connect(m_phyxCalculator, SIGNAL(prefixesChanged()),
-            this, SLOT(updatePrefixes()));
-    connect(m_phyxCalculator, SIGNAL(functionsChanged()),
-            this, SLOT(updateFunctions()));
-    connect(m_phyxCalculator, SIGNAL(datasetsChanged()),
-            this, SLOT(updateDatasets()));
-    connect(m_phyxCalculator,SIGNAL(datasetsChanged()),
-            this, SLOT(showPlotWindow()));
+    connect(m_phyxCalculator, &PhyxCalculator::outputResult,
+            this, &LineParser::outputResult);
+    connect(m_phyxCalculator, &PhyxCalculator::outputError,
+            this, &LineParser::outputError);
+    connect(m_phyxCalculator, &PhyxCalculator::outputConverted,
+            this, &LineParser::outputConverted);
+    connect(m_phyxCalculator, &PhyxCalculator::outputText,
+            this, &LineParser::outputText);
+    connect(m_phyxCalculator, &PhyxCalculator::variablesChanged,
+            this, &LineParser::showVariables);
+    connect(m_phyxCalculator, &PhyxCalculator::constantsChanged,
+            this, &LineParser::showConstants);
+    connect(m_phyxCalculator, &PhyxCalculator::unitsChanged,
+            this, &LineParser::updateUnits);
+    connect(m_phyxCalculator, &PhyxCalculator::prefixesChanged,
+            this, &LineParser::updatePrefixes);
+    connect(m_phyxCalculator, &PhyxCalculator::functionsChanged,
+            this, &LineParser::updateFunctions);
+    connect(m_phyxCalculator, &PhyxCalculator::datasetsChanged,
+            this, &LineParser::updateDatasets);
+    connect(m_phyxCalculator, &PhyxCalculator::datasetsChanged,
+            this, &LineParser::showPlotWindow);
 }
 
 LineParser::~LineParser()
@@ -138,8 +138,8 @@ bool LineParser::resultLineSelected()
 
 bool LineParser::commentLineSelected()
 {
-    QRegExp commentStart("/\\*");
-    QRegExp commentEnd("\\*/");
+    QRegularExpression commentStart("/\\*");
+    QRegularExpression commentEnd("\\*/");
     QString line = getCurrentLine();
 
     //check for multi line comment
@@ -388,7 +388,7 @@ QString LineParser::exportFormelEditor()
     QStringList textLines;
     int pos,
         depth;
-    QRegExp regExp;
+    QRegularExpression regExp;
 
     enum ExportTarget {
         MathTarget,
@@ -578,7 +578,7 @@ QString LineParser::exportFormelEditor()
         }
 
         //complete it with replacing /
-        line.replace(QRegExp("[ ]*[/][ ]*"), fractionOver);
+        line.replace(QRegularExpression("[ ]*[/][ ]*"), fractionOver);
 
         textLines[n] = line;
      }
@@ -608,15 +608,16 @@ QString LineParser::exportFormelEditor()
     if (target == LatexTarget)
     {
 
-        text.replace(QRegExp("[sS][qQ][rR][tT]?"), "\\sqrt");
+        text.replace(QRegularExpression("[sS][qQ][rR][tT]?"), "\\sqrt");
 
-        regExp = QRegExp("[rR][oO][oO][tT]([\\d\\.]+)");
+        regExp = QRegularExpression("[rR][oO][oO][tT]([\\d\\.]+)");
         int pos = 0;
-        while ((pos = regExp.indexIn(text, pos)) != -1) {
-         QString replacement = QString("\\sqrt[%1]").arg(regExp.cap(1));
-         text.replace(pos,regExp.matchedLength(),replacement);
-         pos += replacement.size();
-
+        QRegularExpressionMatch match = regExp.match(text, pos);
+        while (match.hasMatch()) {
+         QString replacement = QString("\\sqrt[%1]").arg(match.captured(1));
+         text.replace(match.capturedStart(), match.capturedLength(), replacement);
+         pos = match.capturedStart() + replacement.size();
+         match = regExp.match(text, pos);
         }
     }
 

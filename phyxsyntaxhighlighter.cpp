@@ -22,8 +22,8 @@
 PhyxSyntaxHighlighter::PhyxSyntaxHighlighter(QTextDocument *parent) :
     QSyntaxHighlighter(parent)
 {
-    commentStartExpression = QRegExp("/\\*");
-    commentEndExpression = QRegExp("\\*/");
+    commentStartExpression = QRegularExpression("/\\*");
+    commentEndExpression = QRegularExpression("\\*/");
 }
 
 void PhyxSyntaxHighlighter::setVariableHighlightingRules(QStringList variableList)
@@ -33,7 +33,7 @@ void PhyxSyntaxHighlighter::setVariableHighlightingRules(QStringList variableLis
     {
         QString pattern = QString("%1").arg(variableName);
         HighlightingRule rule;
-        rule.pattern = QRegExp(pattern);
+        rule.pattern = QRegularExpression(pattern);
         rule.format = variablesFormat;
         variableHighlightingRules.append(rule);
     }
@@ -47,7 +47,7 @@ void PhyxSyntaxHighlighter::setConstantHighlightingRules(QStringList variableLis
     {
         QString pattern = QString("%1_").arg(variableName);
         HighlightingRule rule;
-        rule.pattern = QRegExp(pattern);
+        rule.pattern = QRegularExpression(pattern);
         rule.format = constantsFormat;
         constantHighlightingRules.append(rule);
     }
@@ -62,7 +62,7 @@ void PhyxSyntaxHighlighter::setUnitHighlightingRules(QStringList unitList)
         variableName.replace("$","\\$");
         QString pattern = QString("%1").arg(variableName);
         HighlightingRule rule;
-        rule.pattern = QRegExp(pattern);
+        rule.pattern = QRegularExpression(pattern);
         rule.format = unitFormat;
         unitHighlightingRules.append(rule);
     }
@@ -76,7 +76,7 @@ void PhyxSyntaxHighlighter::setFunctionHighlightinhRules(QStringList functionLis
     {
         QString pattern = QString("%1").arg(variableName);
         HighlightingRule rule;
-        rule.pattern = QRegExp(pattern);
+        rule.pattern = QRegularExpression(pattern);
         rule.format = functionFormat;
         functionHighlightingRules.append(rule);
     }
@@ -105,12 +105,14 @@ void PhyxSyntaxHighlighter::removeError(int line, int pos)
 void PhyxSyntaxHighlighter::highlightRules(const QString &text, const QVector<HighlightingRule> &highlightingRules)
 {
     foreach (const HighlightingRule &rule, highlightingRules) {
-        QRegExp expression(rule.pattern);
-        int index = expression.indexIn(text);
+        QRegularExpression expression(rule.pattern);
+        QRegularExpressionMatch match = expression.match(text);
+        int index = match.capturedStart();
         while (index >= 0) {
-            int length = expression.matchedLength();
+            int length = match.capturedLength();
             setFormat(index, length, rule.format);
-            index = expression.indexIn(text, index + length);
+            match = expression.match(text, index + length);
+            index = match.capturedStart();
         }
     }
 }
@@ -128,21 +130,25 @@ void PhyxSyntaxHighlighter::highlightBlock(const QString &text)
     setCurrentBlockState(0);
 
     int startIndex = 0;
-    if (previousBlockState() != 1)
-        startIndex = commentStartExpression.indexIn(text);
+    if (previousBlockState() != 1) {
+        QRegularExpressionMatch match = commentStartExpression.match(text);
+        startIndex = match.capturedStart();
+    }
 
     while (startIndex >= 0) {
-        int endIndex = commentEndExpression.indexIn(text, startIndex);
+        QRegularExpressionMatch endMatch = commentEndExpression.match(text, startIndex);
+        int endIndex = endMatch.capturedStart();
         int commentLength;
         if (endIndex == -1) {
             setCurrentBlockState(1);
             commentLength = text.length() - startIndex;
         } else {
             commentLength = endIndex - startIndex
-                            + commentEndExpression.matchedLength();
+                            + endMatch.capturedLength();
         }
         setFormat(startIndex, commentLength, commentFormat);
-        startIndex = commentStartExpression.indexIn(text, startIndex + commentLength);
+        QRegularExpressionMatch nextMatch = commentStartExpression.match(text, startIndex + commentLength);
+        startIndex = nextMatch.capturedStart();
     }
 
     //underline error
@@ -212,7 +218,7 @@ void PhyxSyntaxHighlighter::updateFormats()
     commentFormat.setToolTip("comment");
 
     //text
-    rule.pattern = QRegExp("[\\S]+");
+    rule.pattern = QRegularExpression("[\\S]+");
     rule.format = textFormat;
     highlightingRulesPriority1.append(rule);
 
@@ -220,13 +226,13 @@ void PhyxSyntaxHighlighter::updateFormats()
     QStringList keywordPatterns;
     keywordPatterns << "\\bif\\b" << "\\bthen\\b" << "\\belse\\b";
     foreach (const QString &pattern, keywordPatterns) {
-        rule.pattern = QRegExp(pattern);
+        rule.pattern = QRegularExpression(pattern);
         rule.format = keywordFormat;
         highlightingRulesPriority2.append(rule);
     }
 
     //functions
-    //rule.pattern = QRegExp("\\b[A-Za-z0-9_]+(?=\\()");
+    //rule.pattern = QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()");
     //rule.format = functionFormat;
     //highlightingRulesPriority2.append(rule);
 
@@ -234,20 +240,20 @@ void PhyxSyntaxHighlighter::updateFormats()
 
     //numbers
     rule.format = numberFormat;
-    rule.pattern = QRegExp("(\\b(([0-9]+(\\.[0-9]+)?)|(\\.[0-9]+))([eE][+-]?[0-9]+)?[ij]?)|(\\b[0][x][0-9A-Fa-f]+\\b)|(\\b[0][o][0-7]+\\b)|(\\b[0][b][0-1]+\\b)");
+    rule.pattern = QRegularExpression("(\\b(([0-9]+(\\.[0-9]+)?)|(\\.[0-9]+))([eE][+-]?[0-9]+)?[ij]?)|(\\b[0][x][0-9A-Fa-f]+\\b)|(\\b[0][o][0-7]+\\b)|(\\b[0][b][0-1]+\\b)");
     //highlightingRulesPriority1.append(rule);
-    //rule.pattern = QRegExp("\\b[0][x][0-9A-Fa-f]+\\b");
+    //rule.pattern = QRegularExpression("\\b[0][x][0-9A-Fa-f]+\\b");
     //highlightingRulesPriority1.append(rule);
-    //rule.pattern = QRegExp("\\b[0][b][0-1]+\\b");
+    //rule.pattern = QRegularExpression("\\b[0][b][0-1]+\\b");
     highlightingRulesPriority2.append(rule);
 
     //single line comments
-    rule.pattern = QRegExp("//[^\n]*");
+    rule.pattern = QRegularExpression("//[^\n]*");
     rule.format = commentFormat;
     highlightingRulesPriority2.append(rule);
 
     //strings
-    rule.pattern = QRegExp("\".*\"");
+    rule.pattern = QRegularExpression("\".*\"");
     rule.format = stringFormat;
     highlightingRulesPriority2.append(rule);
 }

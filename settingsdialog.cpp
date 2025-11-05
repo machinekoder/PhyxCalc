@@ -38,8 +38,8 @@ SettingsDialog::SettingsDialog(QWidget *parent) :
 
     QPushButton *button = ui->buttonBox->addButton(tr("Open Settings Directory"), QDialogButtonBox::ActionRole);
     button->setIcon(QIcon::fromTheme("document-open",QIcon(":/icons/document-open")));
-    connect(button, SIGNAL(clicked()),
-            this, SLOT(openSettingsDir()));
+    connect(button, &QPushButton::clicked,
+            this, &SettingsDialog::openSettingsDir);
 }
 
 SettingsDialog::~SettingsDialog()

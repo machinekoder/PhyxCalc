@@ -67,134 +67,134 @@ PlotWindow::PlotWindow(QWidget *parent) :
 
     updateSettings();
 
-    connect(ui->saveButton, SIGNAL(clicked()),
-            this, SLOT(saveDocument()));
-    connect(ui->printButton, SIGNAL(clicked()),
-            this, SLOT(printPlot()));
-    connect(ui->clipboardButton, SIGNAL(clicked()),
-            this, SLOT(copyToClipboard()));
+    connect(ui->saveButton, &QPushButton::clicked,
+            this, &PlotWindow::saveDocument);
+    connect(ui->printButton, &QPushButton::clicked,
+            this, &PlotWindow::printPlot);
+    connect(ui->clipboardButton, &QPushButton::clicked,
+            this, &PlotWindow::copyToClipboard);
 
-    connect(ui->datasetTable, SIGNAL(itemSelectionChanged()),
-            this, SLOT(updatePlots()));
+    connect(ui->datasetTable, &QTableWidget::itemSelectionChanged,
+            this, &PlotWindow::updatePlots);
 
-    connect(ui->settingsLegendGroup, SIGNAL(clicked(bool)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsTitleGroup, SIGNAL(clicked(bool)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXBTitleGroup, SIGNAL(clicked(bool)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXTTitleGroup, SIGNAL(clicked(bool)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYLTitleGroup, SIGNAL(clicked(bool)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYRTitleGroup, SIGNAL(clicked(bool)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsGridGroup, SIGNAL(clicked(bool)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsGridXCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsGridYCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsGridXMinCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsGridYMinCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsLineThicknessSpin, SIGNAL(valueChanged(int)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsTitleEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsLegendPositionCombo, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXBTitleEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXTTitleEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYLTitleEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYRTitleEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXBAutoscaleCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXTAutoscaleCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYLAutoscaleCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYRAutoscaleCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXBScaleMinSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXBScaleMaxSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXBScaleStepSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXTScaleMinSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXTScaleMaxSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXTScaleStepSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYLScaleMinSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYLScaleMaxSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYLScaleStepSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYRScaleMinSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYRScaleMaxSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYRScaleStepSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXBLogCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXTLogCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYLLogCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYRLogCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXBInvCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsXTInvCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYLInvCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
-    connect(ui->settingsYRInvCheck, SIGNAL(clicked()),
-            this, SLOT(updateSettings()));
+    connect(ui->settingsLegendGroup, &QGroupBox::toggled,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsTitleGroup, &QGroupBox::toggled,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXBTitleGroup, &QGroupBox::toggled,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXTTitleGroup, &QGroupBox::toggled,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYLTitleGroup, &QGroupBox::toggled,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYRTitleGroup, &QGroupBox::toggled,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsGridGroup, &QGroupBox::toggled,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsGridXCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsGridYCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsGridXMinCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsGridYMinCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsLineThicknessSpin, &QSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsTitleEdit, &QLineEdit::textChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsLegendPositionCombo, &QComboBox::currentIndexChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXBTitleEdit, &QLineEdit::textChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXTTitleEdit, &QLineEdit::textChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYLTitleEdit, &QLineEdit::textChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYRTitleEdit, &QLineEdit::textChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXBAutoscaleCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXTAutoscaleCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYLAutoscaleCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYRAutoscaleCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXBScaleMinSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXBScaleMaxSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXBScaleStepSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXTScaleMinSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXTScaleMaxSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXTScaleStepSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYLScaleMinSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYLScaleMaxSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYLScaleStepSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYRScaleMinSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYRScaleMaxSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYRScaleStepSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXBLogCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXTLogCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYLLogCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYRLogCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXBInvCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsXTInvCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYLInvCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
+    connect(ui->settingsYRInvCheck, &QCheckBox::clicked,
+            this, &PlotWindow::updateSettings);
 
-    connect(ui->exportWidthSpin, SIGNAL(editingFinished()),
-            this, SLOT(updateMMs()));
-    connect(ui->exportHeightSpin, SIGNAL(editingFinished()),
-            this, SLOT(updateMMs()));
-    connect(ui->exportDpiXSpin, SIGNAL(editingFinished()),
-            this, SLOT(updateMMs()));
-    connect(ui->exportDpiYSpin, SIGNAL(editingFinished()),
-            this, SLOT(updateMMs()));
-    connect(ui->exportWidthMMSpin, SIGNAL(editingFinished()),
-            this, SLOT(updatePixels()));
-    connect(ui->exportHeightMMSpin, SIGNAL(editingFinished()),
-            this, SLOT(updatePixels()));
+    connect(ui->exportWidthSpin, &QSpinBox::editingFinished,
+            this, &PlotWindow::updateMMs);
+    connect(ui->exportHeightSpin, &QSpinBox::editingFinished,
+            this, &PlotWindow::updateMMs);
+    connect(ui->exportDpiXSpin, &QSpinBox::editingFinished,
+            this, &PlotWindow::updateMMs);
+    connect(ui->exportDpiYSpin, &QSpinBox::editingFinished,
+            this, &PlotWindow::updateMMs);
+    connect(ui->exportWidthMMSpin, &QSpinBox::editingFinished,
+            this, &PlotWindow::updatePixels);
+    connect(ui->exportHeightMMSpin, &QSpinBox::editingFinished,
+            this, &PlotWindow::updatePixels);
 
-    connect(ui->marker1Group, SIGNAL(toggled(bool)),
-            this, SLOT(updateMarkers()));
-    connect(ui->marker1XSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateMarkers()));
-    connect(ui->marker1YSpin, SIGNAL(valueChanged(double)),
-            this, SLOT(updateMarkers()));
-    connect(ui->marker1LineCombo, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(updateMarkers()));
-    connect(ui->marker1SymbolCombo, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(updateMarkers()));
-    connect(ui->marker1SymbolSizeSpin, SIGNAL(valueChanged(int)),
-            this, SLOT(updateMarkers()));
+    connect(ui->marker1Group, &QGroupBox::toggled,
+            this, &PlotWindow::updateMarkers);
+    connect(ui->marker1XSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateMarkers);
+    connect(ui->marker1YSpin, &QDoubleSpinBox::valueChanged,
+            this, &PlotWindow::updateMarkers);
+    connect(ui->marker1LineCombo, &QComboBox::currentIndexChanged,
+            this, &PlotWindow::updateMarkers);
+    connect(ui->marker1SymbolCombo, &QComboBox::currentIndexChanged,
+            this, &PlotWindow::updateMarkers);
+    connect(ui->marker1SymbolSizeSpin, &QSpinBox::valueChanged,
+            this, &PlotWindow::updateMarkers);
 
-    connect(ui->datasetTable,SIGNAL(cellChanged(int,int)),
-            this, SLOT(renameDataSet(int,int)));
+    connect(ui->datasetTable, &QTableWidget::cellChanged,
+            this, &PlotWindow::renameDataSet);
 
     //initialize signalmapper
     deleteSignalMapper = new QSignalMapper(this);
-    connect(deleteSignalMapper,SIGNAL(mapped(int)),
-            this, SLOT(deleteDataset(int)));
+    connect(deleteSignalMapper, &QSignalMapper::mapped,
+            this, &PlotWindow::deleteDataset);
 }
 
 PlotWindow::~PlotWindow()
@@ -229,8 +229,8 @@ void PlotWindow::initializeGUI()
     ui->mobileCloseButton->setIcon(QIcon::fromTheme("dialog-close",QIcon(":/icons/dialog-close")));
     ui->mobileSettingsButton->setIcon(QIcon::fromTheme("configure",QIcon(":/icons/configure")));
 
-    connect(ui->mobileCloseButton, SIGNAL(clicked()),
-            this, SLOT(close()));
+    connect(ui->mobileCloseButton, &QPushButton::clicked,
+            this, &PlotWindow::close);
 #else
     ui->mobileCloseButton->setVisible(false);
     ui->mobileSettingsButton->setVisible(false);
@@ -326,20 +326,20 @@ void PlotWindow::updateDatasetTable()
             yGroupList.append(buttonGroupY);
             deleteButtonList.append(button);
 
-            connect(checkBox,SIGNAL(clicked()),
-                    this,SLOT(updatePlots()));
-            connect(radioButtonXB,SIGNAL(clicked()),
-                    this,SLOT(updatePlots()));
-            connect(radioButtonXT,SIGNAL(clicked()),
-                    this,SLOT(updatePlots()));
-            connect(radioButtonYL,SIGNAL(clicked()),
-                    this,SLOT(updatePlots()));
-            connect(radioButtonYR,SIGNAL(clicked()),
-                    this,SLOT(updatePlots()));
+            connect(checkBox, &QCheckBox::clicked,
+                    this, &PlotWindow::updatePlots);
+            connect(radioButtonXB, &QRadioButton::clicked,
+                    this, &PlotWindow::updatePlots);
+            connect(radioButtonXT, &QRadioButton::clicked,
+                    this, &PlotWindow::updatePlots);
+            connect(radioButtonYL, &QRadioButton::clicked,
+                    this, &PlotWindow::updatePlots);
+            connect(radioButtonYR, &QRadioButton::clicked,
+                    this, &PlotWindow::updatePlots);
 
             deleteSignalMapper->setMapping(button, i);
-            connect(button,SIGNAL(clicked()),
-                    deleteSignalMapper, SLOT(map()));
+            connect(button, &QPushButton::clicked,
+                    deleteSignalMapper, &QSignalMapper::map);
         }
     }
 
@@ -796,7 +796,7 @@ void PlotWindow::saveDocument()
 
     QString docName = ui->qwtPlot->title().text();
     if (!docName.isEmpty())
-        docName.replace (QRegExp(QString::fromLatin1("\n")), tr(" -- "));
+        docName.replace (QRegularExpression(QString::fromLatin1("\n")), tr(" -- "));
     else
         docName = "plot";
 
@@ -846,7 +846,7 @@ void PlotWindow::printPlot()
     QString docName = ui->qwtPlot->title().text();
     if (!docName.isEmpty())
     {
-        docName.replace (QRegExp(QString::fromLatin1("\n")), tr(" -- "));
+        docName.replace (QRegularExpression(QString::fromLatin1("\n")), tr(" -- "));
         printer.setDocName (docName);
     }
 

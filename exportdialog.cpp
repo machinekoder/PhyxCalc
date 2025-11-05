@@ -27,15 +27,15 @@ ExportDialog::ExportDialog(QWidget *parent) :
     ui->setupUi(this);
 
     QPushButton *button = ui->buttonBox->addButton(tr("Copy to Clipboard"), QDialogButtonBox::ActionRole);
-    connect(button, SIGNAL(clicked()),
-            this, SLOT(copyToClipboard()));
+    connect(button, &QPushButton::clicked,
+            this, &ExportDialog::copyToClipboard);
 
 #ifdef MOBILE_VERSION
     this->setWindowState(Qt::WindowMaximized);
 #else
     button = ui->buttonBox->addButton(tr("Open Formel Editor"), QDialogButtonBox::ActionRole);
-    connect(button, SIGNAL(clicked()),
-            this, SLOT(openFormelEditor()));
+    connect(button, &QPushButton::clicked,
+            this, &ExportDialog::openFormelEditor);
 #endif
 }
 

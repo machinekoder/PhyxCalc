@@ -29,20 +29,20 @@ PlotDialog::PlotDialog(QWidget *parent) :
     this->setWindowState(Qt::WindowMaximized);
 #endif
 
-    connect(ui->variableEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateOutput()));
-    connect(ui->expressionEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateOutput()));
-    connect(ui->startEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateOutput()));
-    connect(ui->stopEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateOutput()));
-    connect(ui->stepEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(updateOutput()));
-    connect(ui->linearRadio, SIGNAL(clicked()),
-            this, SLOT(updateOutput()));
-    connect(ui->logRadio, SIGNAL(clicked()),
-            this, SLOT(updateOutput()));
+    connect(ui->variableEdit, &QLineEdit::textChanged,
+            this, &PlotDialog::updateOutput);
+    connect(ui->expressionEdit, &QLineEdit::textChanged,
+            this, &PlotDialog::updateOutput);
+    connect(ui->startEdit, &QLineEdit::textChanged,
+            this, &PlotDialog::updateOutput);
+    connect(ui->stopEdit, &QLineEdit::textChanged,
+            this, &PlotDialog::updateOutput);
+    connect(ui->stepEdit, &QLineEdit::textChanged,
+            this, &PlotDialog::updateOutput);
+    connect(ui->linearRadio, &QRadioButton::clicked,
+            this, &PlotDialog::updateOutput);
+    connect(ui->logRadio, &QRadioButton::clicked,
+            this, &PlotDialog::updateOutput);
 
     updateOutput();
 }
