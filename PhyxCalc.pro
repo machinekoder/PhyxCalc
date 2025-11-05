@@ -32,7 +32,7 @@ symbian:TARGET.UID3 = 0xE4EA669C
 QT += QtCore QtGui QtSvg QtWidgets QtPrintSupport
 
 # Qt6 configuration
-CONFIG += c++20
+CONFIG += c++17
 
 
 TARGET = phyxcalc
